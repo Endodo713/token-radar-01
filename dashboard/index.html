@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — which pre-token protocol launches the next big token?</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="dot" aria-hidden="true"></span><span class="brand-name">TOKEN&nbsp;RADAR</span><span class="brand-tag">pre-token watch</span></div>
+  <div class="top-meta" id="meta"></div>
+</header>
+<main class="shell">
+  <section class="hero">
+    <p class="kicker">DEFI LLAMA SNAPSHOT &middot; <span id="asof"></span></p>
+    <h1>Which protocol launches the next big token?</h1>
+    <p class="lede">Every protocol below records no token yet. Each one is priced the way the market already prices the same kind of business: its TVL times the median FDV/TVL of live-token protocols in its category. Click any row for the full farm plan.</p>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section class="controls" aria-label="Filter and sort the board">
+    <div class="field">
+      <label for="q">Search</label>
+      <input id="q" type="search" placeholder="Protocol name or slug" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="cat">Category</label>
+      <select id="cat"><option value="">All categories</option></select>
+    </div>
+    <div class="field">
+      <label for="chain">Chain</label>
+      <select id="chain"><option value="">All chains</option></select>
+    </div>
+    <div class="field check">
+      <label for="wl"><input id="wl" type="checkbox"> Watchlist only</label>
+    </div>
+    <div class="field">
+      <label for="sort">Sort by</label>
+      <select id="sort">
+        <option value="rank">Rank (implied value)</option>
+        <option value="tvl">TVL, high to low</option>
+        <option value="growth">7-day growth</option>
+        <option value="age">Age, oldest first</option>
+      </select>
+    </div>
+    <p class="count" id="count" aria-live="polite"></p>
+  </section>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table id="board">
+        <thead>
+          <tr>
+            <th class="num">#</th>
+            <th>Protocol</th>
+            <th>Category</th>
+            <th>Chains</th>
+            <th class="num">TVL</th>
+            <th class="num">7d</th>
+            <th class="num">Age</th>
+            <th class="num">Implied value</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="empty" hidden>
+      <h2>No protocol matches</h2>
+      <p>Loosen the filters to see the board again.</p>
+      <button class="button" id="reset" type="button">Clear filters</button>
+    </div>
+  </section>
+
+  <section class="method" id="method">
+    <h2>How the value is priced</h2>
+    <p class="formula">implied&nbsp;=&nbsp;TVL&nbsp;&times;&nbsp;category&nbsp;median&nbsp;(FDV/TVL)&nbsp;&times;&nbsp;growth&nbsp;&times;&nbsp;maturity</p>
+    <div class="method-grid">
+      <div>
+        <h3>1 &middot; Comparables, not a fixed multiple</h3>
+        <p>Each protocol is priced at the median FDV/TVL of live-token protocols in its own category. Lending trades near 0.13&times; TVL, DEXes near 0.34&times;, liquid staking near 0.03&times;. A category with fewer than five live protocols falls back to the global median (<span id="gmed"></span>). The multiple is printed on every row, with its source, so the board can be checked line by line.</p>
+      </div>
+      <div>
+        <h3>2 &middot; Growth and age</h3>
+        <p>Seven-day TVL change, clamped to &minus;60%…+120%, moves the value by half its size. A protocol tracked longer with no token yet counts more: maturity runs 0.60 for a newborn to 1.00 after three years. Nothing in the model names a protocol: the same function scores every row.</p>
+      </div>
+      <div>
+        <h3>3 &middot; What &ldquo;no token&rdquo; means</h3>
+        <p>&ldquo;Pre-token&rdquo; means DefiLlama&rsquo;s record carries no token for the protocol. It is not proof the protocol has none, and it is not a prediction that one will be issued, or when. A board&rsquo;s implied value is this entry&rsquo;s own claim, never make.fun&rsquo;s.</p>
+      </div>
+    </div>
+    <h3 class="subhead">The comparables behind the board</h3>
+    <div class="table-wrap slim">
+      <table id="comps">
+        <thead><tr><th>Category</th><th class="num">Live protocols</th><th class="num">Median FDV/TVL</th></tr></thead>
+        <tbody id="comp-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="live" id="live">
+    <h2>Already trading — the market&rsquo;s own values</h2>
+    <p class="lede">These protocols already have a token, so the board shows their market cap, not a model&rsquo;s guess. They are the comparables the multiples above come from, kept apart from the ranked board.</p>
+    <div class="table-wrap slim">
+      <table id="livetab">
+        <thead><tr><th>Protocol</th><th>Category</th><th class="num">TVL</th><th class="num">Market cap</th><th class="num">FDV/TVL</th></tr></thead>
+        <tbody id="live-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>Source: <span id="src"></span>. Snapshot <span id="asof2"></span>. Model radar-2. Implied values are estimates from the snapshot&rsquo;s own figures, not investment advice.</p>
+  </footer>
+</main>
+
+<aside class="detail" id="detail" hidden aria-label="Protocol detail"></aside>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
